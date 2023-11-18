@@ -1,6 +1,7 @@
 const Student = require('../model/Student')
 
 const handleGetAllStudents = async (req, res) => {
+    const {limit, offset} = req.query;
     const sortBy = req.body
     let filter = {};
     if (sortBy.group){
@@ -49,7 +50,7 @@ const handleGetAllStudents = async (req, res) => {
     }
     try {
         
-        const result = await Student.find(filter)
+        const result = await Student.find(filter).skip(offset).limit(limit)
         res.status(202).json({'students': result})
     } catch (err){
         console.log(err.message)
